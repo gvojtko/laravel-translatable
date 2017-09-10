@@ -263,7 +263,7 @@ trait Translatable
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    protected function getTranslationOrNew($language)
+    protected function getTranslationOrNew(LanguageModel $language)
     {
         if (($translation = $this->getTranslation($language, false)) === null) {
             $translation = $this->getNewTranslation($language);
