@@ -1,36 +1,6 @@
 <?php
 
 return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application Locales
-    |--------------------------------------------------------------------------
-    |
-    | Contains an array with the applications available locales.
-    |
-    */
-    'locales' => [
-        'en',
-        'fr',
-        'es' => [
-            'MX', // mexican spanish
-            'CO', // colombian spanish
-        ],
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Locale separator
-    |--------------------------------------------------------------------------
-    |
-    | This is a string used to glue the language and the country when defining
-    | the available locales. Example: if set to '-', then the locale for
-    | colombian spanish will be saved as 'es-CO' into the database.
-    |
-    */
-    'locale_separator' => '-',
-
     /*
     |--------------------------------------------------------------------------
     | Default locale
@@ -55,18 +25,6 @@ return [
     |
     */
     'use_fallback' => false,
-
-    /*
-    |--------------------------------------------------------------------------
-    | Use fallback per property
-    |--------------------------------------------------------------------------
-    |
-    | The property fallback feature will return the translated value of
-    | the fallback locale if the property is empty for the selected
-    | locale. Note that 'use_fallback' must be enabled.
-    |
-     */
-    'use_property_fallback' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -105,12 +63,37 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Always load translations when converting to array
+    | Make translated attributes always fillable
     |--------------------------------------------------------------------------
-    | Setting this to false will have a performance improvement but will
-    | not return the translations when using toArray(), unless the
-    | translations relationship is already loaded.
     |
-     */
-    'to_array_always_loads_translations' => true,
+    | If true, translatable automatically sets
+    | translated attributes as fillable.
+    |
+    | WARNING!
+    | Set this to true only if you understand the security risks.
+    |
+    */
+    'always_fillable' => false,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Languages Model
+    |--------------------------------------------------------------------------
+    |
+    | Points to class representing languages
+    |
+    */
+    'languages_model' => App\Language::class,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Language default foregin key
+    |--------------------------------------------------------------------------
+    |
+    | Default name of the foregin language key.
+    | It can be overwrite by public $languageForeginKey in 
+    | a class representing translations.
+    |
+    */
+    'language_def_foregin_key' => 'language_id'
 ];
