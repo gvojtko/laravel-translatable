@@ -302,20 +302,42 @@ trait Translatable
      */
     public function fill(array $attributes)
     {
+        $totallyGuarded = $this->totallyGuarded();
         foreach ($attributes as $key => $values) {
-            if ($this->isKeyALocale($key)) {
-                $this->getTranslationOrNew($key)->fill($values);
-                unset($attributes[$key]);
-            } else {
-                list($attribute, $language) = $this->getAttributeAndLocale($key);
-                if ($this->isTranslationAttribute($attribute) and $this->isKeyALocale($language)) {
-                    $this->getTranslationOrNew($language)->fill([$attribute => $values]);
-                    unset($attributes[$key]);
+            if ($key === 'translations') {
+                foreach ($values as $languageId => $translations) {
+                    foreach ($translations as $translationAttribute => $translationValue) {
+                        if ($this->alwaysFillable() || $this->isFillable($translationAttribute)) {
+                            $languageSkeletor     = $this->getNewLanguageModel();
+                            $languageSkeletor->id = $languageId;
+                            $translation          = $this->getTranslationOrNew($languageSkeletor);
+                            $translation->id;
+                            $translation->fill([$translationAttribute => $translationValue]);
+                        } elseif ($totallyGuarded) {
+                            throw new MassAssignmentException($key);
+                        }
+                    }
                 }
+                unset($attributes[$key]);
             }
         }
-
         return parent::fill($attributes);
+
+
+//        foreach ($attributes as $key => $values) {
+//            if ($this->isKeyALocale($key)) {
+//                $this->getTranslationOrNew($key)->fill($values);
+//                unset($attributes[$key]);
+//            } else {
+//                list($attribute, $language) = $this->getAttributeAndLocale($key);
+//                if ($this->isTranslationAttribute($attribute) and $this->isKeyALocale($language)) {
+//                    $this->getTranslationOrNew($language)->fill([$attribute => $values]);
+//                    unset($attributes[$key]);
+//                }
+//            }
+//        }
+//
+//        return parent::fill($attributes);
     }
 
     /**
@@ -751,6 +773,10 @@ trait Translatable
      */
     protected function localeLanguage()
     {
+        if ($this->defaultLocale) {
+            return $this->defaultLocale;
+        }
+
         $locale = $this->locale();
         return $this->getLanguageByCodeKey($locale);
     }
