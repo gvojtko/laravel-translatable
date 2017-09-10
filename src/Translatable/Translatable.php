@@ -45,7 +45,7 @@ trait Translatable
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function translateOrNew(LangaugeModel $language)
+    public function translateOrNew(LanguageModel $language)
     {
         return $this->getTranslationOrNew($language);
     }
@@ -56,14 +56,14 @@ trait Translatable
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public function getTranslation(LangaugeModel $langauge = null, $withFallback = null)
+    public function getTranslation(LanguageModel $language = null, $withFallback = null)
     {
         $configFallbackLocale = $this->getFallbackLocale();
-        $langauge = $langauge ?: $this->locale();
+        $language = $language ?: $this->locale();
         $withFallback = $withFallback === null ? $this->useFallback() : $withFallback;
         $fallbackLocale = $this->getFallbackLocale($language);
 
-        if ($translation = $this->getTranslationByLocaleKey($langauge)) {
+        if ($translation = $this->getTranslationByLocaleKey($language)) {
             return $translation;
         }
         if ($withFallback && $fallbackLocale) {
@@ -164,9 +164,9 @@ trait Translatable
      * @param $attribute
      * @return mixed
      */
-    private function getAttributeOrFallback(LangaugeModel $language, $attribute)
+    private function getAttributeOrFallback(LanguageModel $language, $attribute)
     {
-        $value = $this->getTranslation($langauge)->$attribute;
+        $value = $this->getTranslation($language)->$attribute;
 
         $usePropertyFallback = $this->useFallback() && $this->usePropertyFallback();
         if (empty($value) && $usePropertyFallback) {
@@ -389,9 +389,9 @@ trait Translatable
      */
     protected function getLocales()
     {
-        $langaugesConfig = (array) app()->make('config')->get('translatable.locales');
+        $languagesConfig = (array) app()->make('config')->get('translatable.locales');
 
-        if (empty($langaugessConfig)) {
+        if (empty($languagessConfig)) {
             throw new LocalesNotDefinedException('Please make sure you have run "php artisan config:publish dimsav/laravel-translatable" '.
                 ' and that the locales configuration is defined.');
         }
