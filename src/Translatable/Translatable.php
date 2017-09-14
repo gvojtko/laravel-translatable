@@ -80,10 +80,9 @@ trait Translatable
      *
      * @return bool
      */
-    public function hasTranslation(LanguageModel $language = null)
+    public function hasTranslation($language = null)
     {
         $language = $language ?: $this->localeLanguage();
-
         foreach ($this->translations as $translation) {
             if ($translation->getAttribute($this->getLocaleKey()) == $language) {
                 return true;
